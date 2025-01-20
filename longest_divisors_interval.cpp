@@ -16,9 +16,9 @@ int main() {
     cin >> n;
     ll i = 1;
 
-    while (n % i != 0) {
+    while (n % i == 0) {
       i++;
     }
-    cout << i << endl;
+    cout << i - 1 << endl;
   }
 }
