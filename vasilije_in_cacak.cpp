@@ -26,8 +26,3 @@ int main() {
     }
   }
 }
-
-// n ==> 1 to n
-// k ==> k distinct int
-// x ==> sum
-//
