@@ -1,71 +1,50 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+
 using namespace std;
 
-int minOperations(int n, int k, vector<int>& a) {
-    if (k == 2 || k == 3 || k == 5) {
-        int minOps = INT_MAX;
-        for (int i = 0; i < n; i++) {
-            int ops = (k - (a[i] % k)) % k; 
-            minOps = min(minOps, ops);
-        }
-        return minOps;
-    } else if (k == 4) {
-        int countDiv2 = 0; 
-        int minOpsSingle = INT_MAX; 
-        int minOpsPair = INT_MAX; 
-
-        for (int i = 0; i < n; i++) {
-            if (a[i] % 2 == 0) {
-                countDiv2++;
-            }
-            int opsSingle = (4 - (a[i] % 4)) % 4; 
-            minOpsSingle = min(minOpsSingle, opsSingle);
-        }
-
-        if (countDiv2 >= 2) {
-            minOpsPair = 0; 
-        } else if (countDiv2 == 1) {
-            int minOpsSecond = INT_MAX;
-            for (int i = 0; i < n; i++) {
-                if (a[i] % 2 != 0) {
-                    int ops = (2 - (a[i] % 2)) % 2; 
-                    minOpsSecond = min(minOpsSecond, ops);
-                }
-            }
-            minOpsPair = minOpsSecond;
-        } else {
-            
-            vector<int> opsList;
-            for (int i = 0; i < n; i++) {
-                int ops = (2 - (a[i] % 2)) % 2; 
-                opsList.push_back(ops);
-            }
-            sort(opsList.begin(), opsList.end());
-            minOpsPair = opsList[0] + opsList[1];
-        }
-
-        return min(minOpsSingle, minOpsPair);
-    }
-    return 0; // Default case (should not reach here)
-}
-
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
     int t;
     cin >> t;
-    while (t--) {
+    
+    while (t-- > 0) {
         int n, k;
         cin >> n >> k;
-        vector<int> a(n);
+        
+        int md = 0, even = 0;
+        bool div = false;
+        
         for (int i = 0; i < n; i++) {
-            cin >> a[i];
+            int x;
+            cin >> x;
+            x %= k;
+            
+            if (x > 0) {
+                md = max(md, x);
+            } else {
+                div = true;
+            }
+            
+            if (x == 2) {
+                even++;
+            }
         }
-        cout << minOperations(n, k, a) << '\n';
+        
+        if (div) {
+            cout << 0 << endl;
+        } else if (k == 4) {
+            if (even >= 2) {
+                cout << 0 << endl;
+            } else if (even >= 1 || md == 3) {
+                cout << 1 << endl;
+            } else {
+                cout << 2 << endl;
+            }
+        } else {
+            cout << k - md << endl;
+        }
     }
-
+    
     return 0;
 }
